@@ -3,9 +3,10 @@ import numpy as np
 from torch.utils.data import Dataset
 
 class TreeDataset(Dataset):
-    def __init__(self, image_paths, mask_paths):
+    def __init__(self, image_paths, mask_paths, transform=None):
         self.image_paths = image_paths
         self.mask_paths = mask_paths
+        self.transform = transform
 
     def __len__(self):
         return len(self.image_paths)
@@ -23,4 +24,4 @@ class TreeDataset(Dataset):
             mask = augmented["mask"]
 
 
-        return image, mask[None, :, :]
+        return image, mask.unsqueeze(0)

@@ -5,11 +5,18 @@ import glob
 import os
 import torch
 
-from src.model import UNet
+# from src.model import UNet
+from segmentation_models_pytorch import Unet
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model = UNet().to(device)
+model = Unet(
+    encoder_name="resnet18",        
+    encoder_weights="imagenet",     
+    in_channels=3,
+    classes=1
+).to(device)
+
 model.load_state_dict(torch.load("checkpoints/model.pth", map_location=device, weights_only=True))
 model.eval()
 
